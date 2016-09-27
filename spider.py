@@ -57,10 +57,8 @@ def get_artists_info():
         except ValueError as ex:
             print("Exception: %s" % ex)
 
-    os.chdir('data')
-    with open('artists.json','w') as fp:
+    with open('data/artists.json','w') as fp:
         json.dump(singers,fp)
-    os.chdir('..')
 
 def get_top_albums_list():
     """
@@ -99,7 +97,7 @@ def get_albums_info():
 
     albums = []
     method='album.getinfo'
-    for mbid in lst:
+    for mbid in set(lst): # duplications found
         url = '%s?method=%s&mbid=%s&api_key=%s&format=json' % (API, method, mbid, API_KEY)
         try:
             album = {} #extract part of album information
@@ -118,21 +116,95 @@ def get_albums_info():
             albums.append(album)
             print("Processed album %s" % album['name'])
             time.sleep(1)
+        except KeyError as ex:
+            print("Exception: %s" % ex)
         except ValueError as ex:
             print("Exception: %s" % ex)
+        except:
+            print("Unknown error occurs")
     
-    os.chdir('data')
-    with open('albums.json','w') as fp:
+    with open('data/albums.json','w') as fp:
         json.dump(albums,fp)
-    os.chdir('..')
 
 def get_tracks_list():
-    # name and artist
-    pass
+    """
+    Extract track list from albums information
+    Use track name and artist
+    """
+    with open('data/albums.json') as fp:
+        albums = json.load(fp)
+    with open('data/tracks_list.txt','w') as fo:
+        for album in albums:
+            artist = album['artist']
+            for name in album['tracks']:
+                line = (artist + ',' + name).encode('utf-8')
+                fo.write(line + '\n')
 
+def get_tracks_info():
+    """
+    Get track information base on track name and artists
+    API: http://www.last.fm/api/show/track.getInfo
+    """
+    with open('data/tracks_list.txt','r') as fo:
+        lst = [(x.split(',')[0], x.split(',')[1].strip()) for x in fo.readlines()]
+    
+    tracks = []
+    method = 'track.getInfo'
+    for (artist, track_name) in set(lst):
+        artist = artist.replace(' ','+')
+        track_name = track_name.replace(' ','+')
+        url = '%s?method=%s&api_key=%s&artist=%s&track=%s&format=json' % (API, method, API_KEY, artist, track_name)
+        try:
+            track = {} # extract part of track information
+            song = get_request(url)['track']
+            track['name'] = song['name']
+            track['mbid_track'] = song['mbid']
+            track['url'] = song['url']
+            track['duration'] = song['duration']
+            track['listeners'] = song['listeners']
+            track['playcount'] = song['playcount']
+            track['artist'] = song['artist']['name']
+            track['mbid_artist'] = song['artist']['mbid']
+            track['album'] = song['album']['title']
+            track['mbid_album'] = song['album']['mbid']
+            track['tags'] = song['toptags']['tag']
+            tracks.append(track)
+            print("Processed track %s" % track['name'])
+            time.sleep(0.7)
+        except KeyError as ex:
+            print("Exception: %s" % ex)
+        except ValueError as ex:
+            print("Exception: %s" % ex)
+        except:
+            print("Unknown error occurs")
+
+    with open('data/tracks.json','w') as fp:
+        json.dump(tracks,fp)
+
+def get_tags_list():
+    """
+    Extract tags from tracks information
+    Only perserve tag name and url
+    """
+    with open('data/tracks.json','r') as fp:
+        tracks = json.load(fp)
+    
+    tags = set()
+    for track in tracks:
+        tag = (track['tags']['name'], track['tags']['url'])
+        tags.add(tag)
+
+    print(len(tags))
+    with open('data/tags_list.txt','w') as fp:
+        for (name, url) in tags:
+            line = (name + ',' + url).encode('utf-8')
+            fp.write(line + '\n')
 
 if __name__ == '__main__':
     # get_top_artists_list()
     # get_artists_info()
     # get_top_albums_list()
-    get_albums_info()
+    # get_albums_info()
+    # get_tracks_list()
+    # get_tracks_info()
+    get_tags_list()

@@ -88,15 +88,51 @@ def get_top_albums_list():
             time.sleep(1)
     os.chdir('..')
 
-
 def get_albums_info():
     """
     Get album information by mbid
     API: http://www.last.fm/api/show/album.getInfo
     """
+    with open('data/top_albums_mbid.txt') as fo:
+        lst = [x.split(',')[1].strip() for x in fo.readlines()] # album mbid
+        lst = filter(lambda x: '-' in x, lst) # filter unvalid mbid
+
+    albums = []
+    method='album.getinfo'
+    for mbid in lst:
+        url = '%s?method=%s&mbid=%s&api_key=%s&format=json' % (API, method, mbid, API_KEY)
+        try:
+            album = {} #extract part of album information
+            disk = get_request(url)['album']
+            album['name'] = disk['name']
+            album['artist'] = disk['artist']
+            # one artist vs many albums
+            album['mbid_artist'] = disk['tracks']['track'][0]['artist']['mbid']
+            album['mbid_album'] = disk['mbid']
+            album['image'] = disk['image'][2]['#text']
+            album['listeners'] = disk['listeners']
+            album['playcount'] = disk['playcount']
+            album['tracks'] = [x['name'] for x in disk['tracks']['track']]
+            album['published'] = disk['wiki']['published']
+            album['summary'] = disk['wiki']['summary']
+            albums.append(album)
+            print("Processed album %s" % album['name'])
+            time.sleep(1)
+        except ValueError as ex:
+            print("Exception: %s" % ex)
+    
+    os.chdir('data')
+    with open('albums.json','w') as fp:
+        json.dump(albums,fp)
+    os.chdir('..')
+
+def get_tracks_list():
+    # name and artist
     pass
+
 
 if __name__ == '__main__':
     # get_top_artists_list()
     # get_artists_info()
-    get_top_albums_list()
+    # get_top_albums_list()
+    get_albums_info()

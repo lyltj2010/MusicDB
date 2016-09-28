@@ -191,10 +191,10 @@ def get_tags_list():
     
     tags = set()
     for track in tracks:
-        tag = (track['tags']['name'], track['tags']['url'])
-        tags.add(tag)
+        for record in track['tags']:
+            tag = (record['name'], record['url'])
+            tags.add(tag)
 
-    print(len(tags))
     with open('data/tags_list.txt','w') as fp:
         for (name, url) in tags:
             line = (name + ',' + url).encode('utf-8')

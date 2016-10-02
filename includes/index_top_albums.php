@@ -4,18 +4,24 @@
 <div class="container">
 	<div class="head-bar">
 	</div>
+	<?php
+		$sql1 = "SELECT name, image FROM album 
+						ORDER BY listeners DESC LIMIT 4";
+		$results1 = mysqli_query($conn, $sql1);
+	?>
 
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-2"></div>
+		<?php foreach(mysqli_fetch_all($results1,MYSQL_ASSOC) as $row1) { ?>
 			<div class="col-md-2">
 				<div class="thumbnail">
-					<img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
+					<a href='#'> <img src=<?=$row1['image']?>> </a>
 					<div class="caption">
-		      	<p><a href="#">Cold Play</a></p>
-		      </div>
+						<span style="width:10px"> <?=$row1['name']?> </span>
+					</div>
 				</div>
-			</div>
-		</div>
+			</div>	
+		<?php } ?>
 	</div>
 </div>	
 </body>

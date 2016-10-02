@@ -2,7 +2,7 @@
 include 'resources/config.php';
 $conn = mysqli_connect($db_server, $db_user, $db_passwd, $db_name);
 if (mysqli_connect_errno()) {
-    die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . mysqli_connect_error($conn));
 }
 
 $sql = "select name, url from artist limit {$_GET['number']}";

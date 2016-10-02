@@ -6,73 +6,24 @@
 	<div class="head-bar">
 	</div>
 	
+	<?php
+		$sql = "SELECT name, url, image FROM artist 
+						ORDER BY listeners DESC LIMIT 4";
+		$results = mysqli_query($conn, $sql);
+	?>
+
 	<div class="row">
-	  <div class="col-md-2 col-md-offset-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="col-md-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="col-md-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="col-md-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="col-md-2 col-md-offset-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="col-md-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="col-md-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
-	  <div class="col-md-2">
-	    <div class="thumbnail">
-	      <img src="https://lastfm-img2.akamaized.net/i/u/174s/1eb194d3a56bdc8f1976eb279de62f74.png" alt='img'>
-	      <div class="caption">
-	      	<p><a href="#">Cold Play</a></p>
-	      </div>
-	    </div>
-	  </div>
+		<div class="col-md-2"></div>
+		<?php foreach(mysqli_fetch_all($results,MYSQL_ASSOC) as $row) { ?>
+			<div class="col-md-2">
+				<div class="thumbnail">
+					<a href=<?=$row['url']?>> <img src=<?=$row['image']?>> </a>
+					<div class="caption">
+						<p><a href=<?=$row['url']?>> <?=$row['name']?> </a></p>
+					</div>
+				</div>
+			</div>	
+		<?php } ?>
 	</div>
 </div>
 </body>

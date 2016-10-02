@@ -1,0 +1,8 @@
+.thumbnail {
+	padding : 0px;
+}
+
+.thumbnail .caption {
+	padding-top: 1px;
+	padding-bottom: 0px;
+}

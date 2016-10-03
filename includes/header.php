@@ -6,11 +6,12 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-      	<li><a href="#">Find Music</a></li>
-        <li><a href="#">My Music</a></li>
+      	<li><a href="/artists">Artists</a></li>
+        <li><a href="/albums">Albums</a></li>
+        <li><a href="/tracks">Tracks</a></li>
       </ul>
 
-      <form class="navbar-form navbar-left" style="padding-left:535px" role="search">
+      <form class="navbar-form navbar-left" style="padding-left:500px" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="search">
         </div>

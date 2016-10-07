@@ -12,17 +12,29 @@
 ?>
 
 <div class="row">
-  <?php foreach(mysqli_fetch_all($results1,MYSQL_ASSOC) as $row1) { ?>
+  <?php foreach(mysqli_fetch_all($results1,MYSQL_ASSOC) as $row1): ?>
     <div class="col-md-2">
       <div class="thumbnail">
-        <a href='#'> <img src=<?=$row1['image']?>> </a>
+        <a href="album.php?album=<?=$row1['name']?>">
+          <img src="<?=$row1['image']?>"> 
+        </a>
         <div class="caption">
-          <div class="name-inline"> <?=$row1['name']?> </div>
-          <i><div class="name-inline"> <?=$row1['artist']?> </div></i>
+          <div class="name-inline">
+            <a href="album.php?album=<?=$row1['name']?>">
+              <?=$row1['name']?>
+            </a>
+          </div>
+          <i>
+            <div class="name-inline">
+              <a href="artist.php?artist=<?=$row1['artist']?>">
+                <?=$row1['artist']?>
+              </a>
+            </div>
+          </i>
         </div>
       </div>
     </div>  
-  <?php } ?>
+  <?php endforeach ?>
 </div>
 </body>
 </html>

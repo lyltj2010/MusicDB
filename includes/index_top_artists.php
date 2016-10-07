@@ -13,16 +13,20 @@
 ?>
 
 <div class="row">
-  <?php foreach(mysqli_fetch_all($results,MYSQL_ASSOC) as $row) { ?>
+  <?php foreach(mysqli_fetch_all($results,MYSQL_ASSOC) as $row): ?>
     <div class="col-md-2">
       <div class="thumbnail">
-        <a href=<?=$row['url']?>> <img src=<?=$row['image']?>> </a>
+        <a href="artist.php?artist=<?=$row['name']?>">
+          <img src=<?=$row['image']?>>
+        </a>
         <div class="caption">
-          <p><a href=<?=$row['url']?>> <?=$row['name']?> </a></p>
+          <a href="artist.php?artist=<?=$row['name']?>"> 
+            <?=$row['name']?> 
+          </a>
         </div>
       </div>
     </div>  
-  <?php } ?>
+  <?php endforeach ?>
 </div>
 </body>
 </html>

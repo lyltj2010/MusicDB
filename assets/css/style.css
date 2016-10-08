@@ -37,7 +37,8 @@ h3 {
 	display: inline;
 }
 
-/*.cover {
-	height: 400px;
-	width:750px;
-}*/
+ul {
+	list-style-type:none;
+	padding: 0px;
+	margin: 0px;
+}

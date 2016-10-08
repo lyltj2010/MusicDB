@@ -20,11 +20,16 @@
       <div class="col-md-2">
         <div class="list-group">
           <b class="list-group-item">All Artists</b>
+          <ul class="side-bar-list">
           <?php foreach(mysqli_fetch_all($rst_list,MYSQL_ASSOC) as $row_list): ?>
-            <a href="artist.php?artist=<?=$row_list['name']?>" class="list-group-item">
-              <?= $row_list['name']?> 
-            </a>
+            <li>
+              <a href="artist.php?artist=<?=$row_list['name']?>" class="list-group-item">
+                <?= $row_list['name']?> 
+              </a>
+            </li>
           <?php endforeach ?>
+          <button id="show-button">Show More...</button>
+          </ul>
         </div>
       </div>
 
@@ -34,7 +39,7 @@
           <div class="thumbnail">
             <a href="artist.php?artist=<?=$row_img['name']?>">
               <img src=<?=$row_img['image']?>>
-            </a>   
+            </a>
           </div>
         </div> 
         <?php endforeach ?> 

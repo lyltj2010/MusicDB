@@ -20,11 +20,16 @@
       <div class="col-md-2">
         <div class="list-group">
           <b class="list-group-item">All Albums</b>
-          <?php foreach(mysqli_fetch_all($rst_list,MYSQL_ASSOC) as $row_list): ?>
-            <a href="album.php?album=<?=$row_list['name']?>" class="list-group-item">
-              <?= $row_list['name']?> 
-            </a>
-          <?php endforeach ?>
+          <ul class="side-bar-list">
+            <?php foreach(mysqli_fetch_all($rst_list,MYSQL_ASSOC) as $row_list): ?>
+              <li>
+                <a href="album.php?album=<?=$row_list['name']?>" class="list-group-item">
+                  <?= $row_list['name']?> 
+                </a>
+              </li>
+            <?php endforeach ?>
+            <button id="show-button">Show More...</button>
+          </ul>
         </div>
       </div>
 

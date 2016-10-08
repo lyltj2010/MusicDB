@@ -10,12 +10,12 @@
   <?php include 'includes/header.php' ?>
   <?php include 'utils/album_util.php' ?>
   <div class="row">
-    <div class="col-md-1"></div>
-    <div class="col-md-10">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
       <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-3">
-          <img src="<?=$album[image]?>">
+          <img src="<?=$album['image']?>">
         </div>
         <div class="col-md-7">
           <br>
@@ -31,12 +31,12 @@
         </div>
       </div>
     </div>
-    <div class="col-md-1"></div>
+    <div class="col-md-2"></div>
   </div>
 
   <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-7">
+    <div class="col-md-8">
       <table class="table">
         <thead>
           <th>Name</th>
@@ -58,7 +58,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-2"></div>
   </div>
   
 </div>

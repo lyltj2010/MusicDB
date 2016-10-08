@@ -12,7 +12,8 @@ function get_comments($mbid_track) {
 	// get comments of the given track
 	include 'resources/config.php';
 	$conn = mysqli_connect($db_server, $db_user, $db_passwd, $db_name);
-	$sql = "SELECT content FROM comment WHERE track=\"$mbid_track\"";
+	$sql = "SELECT content FROM comment WHERE track=\"$mbid_track\"
+			ORDER BY id DESC";
 	$results = mysqli_fetch_all(mysqli_query($conn,$sql),MYSQLI_ASSOC);
 	return $results;
 }

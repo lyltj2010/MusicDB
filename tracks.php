@@ -13,11 +13,16 @@
       <div class="col-md-2">
         <div class="list-group">
           <b class="list-group-item">All Tags</b>
+          <ul class="side-bar-list">
           <?php foreach(mysqli_fetch_all($rst_tag,MYSQL_ASSOC) as $row_tag): ?>
-            <a href="artist.php?artist=<?=$row_tag['tag']?>" class="list-group-item">
-              <?= ucfirst($row_tag['tag'])?> 
-            </a>
+            <li>
+              <a href="artist.php?artist=<?=$row_tag['tag']?>" class="list-group-item">
+                <?= ucfirst($row_tag['tag'])?> 
+              </a>
+            </li>
           <?php endforeach ?>
+          <button id="show-button">Show More...</button>
+          </ul>
         </div>
       </div>
 

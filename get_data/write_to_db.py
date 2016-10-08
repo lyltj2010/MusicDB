@@ -31,9 +31,8 @@ def load_json(filename):
 def create_table_artist():
     db, cursor = connect_db()
     sql = """CREATE TABLE artist(
-             id INT PRIMARY KEY AUTO_INCREMENT,
              name CHAR(50) NOT NULL,
-             mbid_artist CHAR(50),
+             mbid_artist CHAR(50) PRIMARY KEY,
              url CHAR(80),
              listeners INT,
              playcount INT,
@@ -45,15 +44,16 @@ def create_table_artist():
 def create_table_album():
     db, cursor = connect_db()
     sql = """CREATE TABLE album(
-             id INT PRIMARY KEY AUTO_INCREMENT,
              name CHAR(50) NOT NULL,
              artist CHAR(50),
-             mbid_album CHAR(50),
+             mbid_album CHAR(50) PRIMARY KEY,
              mbid_artist CHAR(50),
              listeners INT,
              playcount INT,
              image TEXT,
-             published TIMESTAMP)"""
+             published TIMESTAMP,
+             FOREIGN KEY (mbid_artist) REFERENCES artist(mbid_artist)
+             ON DELETE CASCADE ON UPDATE CASCADE)"""
     if not table_exists('album'):
         cursor.execute(sql)
     db.close()
@@ -61,9 +61,8 @@ def create_table_album():
 def create_table_track():
     db, cursor = connect_db()
     sql = """CREATE TABLE track(
-             id INT PRIMARY KEY AUTO_INCREMENT,
              name CHAR(50) NOT NULL,
-             mbid_track CHAR(50),
+             mbid_track CHAR(50) PRIMARY KEY,
              url CHAR(80),
              artist CHAR(50),
              mbid_artist CHAR(50),
@@ -71,7 +70,9 @@ def create_table_track():
              mbid_album CHAR(50),
              duration MEDIUMINT,
              listeners INT,
-             playcount INT)"""
+             playcount INT,
+             FOREIGN KEY (mbid_album) REFERENCES album(mbid_album)
+             ON DELETE CASCADE ON UPDATE CASCADE)"""
     if not table_exists('track'):
         cursor.execute(sql)
     db.close()
@@ -98,28 +99,16 @@ def create_table_track_tag():
         cursor.execute(sql)
     db.close()
 
-def create_table_siteuser():
-    db, cursor = connect_db()
-    sql = """CREATE TABLE siteuser(
-             username CHAR(40) PRIMARY KEY NOT NULL,
-             email CHAR(40) NOT NULL UNIQUE,
-             password CHAR(50) NOT NULL)"""
-    if not table_exists('siteuser'):
-        cursor.execute(sql)
-    db.close()
-
 def create_table_comment():
     """
     Comment table, each track can have many comments
-    Each user can have many coments
     """
     db, cursor = connect_db()
     sql = """CREATE TABLE comment(
              id INT PRIMARY KEY AUTO_INCREMENT,
-             content TEXT,
+             content TEXT NOT NULL,
              track CHAR(50),
-             username CHAR(40),
-             FOREIGN KEY (username) REFERENCES siteuser(username)
+             FOREIGN KEY (track) REFERENCES track(mbid_track)
              ON DELETE CASCADE ON UPDATE CASCADE)
              """
     if not table_exists('comment'):
@@ -197,54 +186,41 @@ def insert_into_track_tag():
                 db.rollback()
     db.close()
 
-def insert_into_siteuser():
-    db, cursor = connect_db()
-    sql = """INSERT INTO siteuser(username,email,password)
-             VALUES ('%s','%s','%s')"""
-    user1 = ('user1','user1@gmail.com','password') 
-    user2 = ('user2','user2@gmail.com','password')
-    cursor.execute(sql % user1); db.commit()
-    cursor.execute(sql % user2); db.commit()
-    db.close()
 
 def insert_into_comment():
     db, cursor = connect_db()
-    sql = """INSERT INTO comment(content,track,username)
-             VALUES ('%s','%s','%s')"""
-    comment1 = ('good','Paradise','user1')
-    comment2 = ('better','Paradise','user1')
-    comment3 = ('great','Paradise','user2')
+    sql = """INSERT INTO comment(content,track)
+             VALUES ('%s','%s')"""
+    comment1 = ('good','24cfd355-220e-4c1f-b8e3-5adf0abbb76f')
+    comment2 = ('better','24cfd355-220e-4c1f-b8e3-5adf0abbb76f')
+    comment3 = ('great','24cfd355-220e-4c1f-b8e3-5adf0abbb76f')
     cursor.execute(sql % comment1); db.commit()
     cursor.execute(sql % comment2); db.commit()
     cursor.execute(sql % comment3); db.commit()
     db.close()
 
 if __name__ == '__main__':
-    # drop_table('artist')
-    # create_table_artist()
-    # insert_into_artist()
-
-    # drop_table('album')
-    # create_table_album()
-    # insert_into_album()
-
-    # drop_table('track')
-    # create_table_track()
-    # insert_into_track()
-
-    # drop_table('tag')
-    # create_table_tag()
-    # insert_into_tag()
-
-    # drop_table('track_tag')
-    # create_table_track_tag()
-    # insert_into_track_tag()
-
     drop_table('comment')
-    drop_table('siteuser')
+    drop_table('track')
+    drop_table('album')
+    drop_table('artist')
+    drop_table('tag')
+    drop_table('track_tag')
 
-    create_table_siteuser()
-    insert_into_siteuser()
+    create_table_artist()
+    insert_into_artist()
+    
+    create_table_album()
+    insert_into_album()
+   
+    create_table_track()
+    insert_into_track()
 
     create_table_comment()
     insert_into_comment()
+   
+    create_table_tag()
+    insert_into_tag()
+
+    create_table_track_tag()
+    insert_into_track_tag()

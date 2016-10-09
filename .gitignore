@@ -2,6 +2,5 @@ config.py
 .ipynb_checkpoints/
 venv/
 test.ipynb
-Readme.md
 config.pyc
 .phpintel/
